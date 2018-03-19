@@ -20,13 +20,21 @@ import {
 
 export let activeInstance: any = null
 export let isUpdatingChildComponent: boolean = false
-
+/**
+ * 初始化生命周期
+ * 主要就是给vm对象添加了$parent、$root、$children属性，
+ * 以及一些其它的生命周期相关的标识。
+ * */
 export function initLifecycle (vm: Component) {
   const options = vm.$options
 
   // locate first non-abstract parent
   let parent = options.parent
   if (parent && !options.abstract) {
+    /**
+     * options.abstract用于判断是否是抽象组件，组件的父子关系建立会跳过抽象组件，
+     * 抽象组件比如keep-alive、transition等。所有的子组件$root都指向顶级组件。
+     * */
     while (parent.$options.abstract && parent.$parent) {
       parent = parent.$parent
     }
@@ -39,11 +47,17 @@ export function initLifecycle (vm: Component) {
   vm.$children = []
   vm.$refs = {}
 
+  // 观察者?
   vm._watcher = null
+  // 活跃中的
   vm._inactive = null
+  // 是否活跃
   vm._directInactive = false
+  // 是否挂载
   vm._isMounted = false
+  // 是否摧毁
   vm._isDestroyed = false
+  // 是否开始摧毁
   vm._isBeingDestroyed = false
 }
 

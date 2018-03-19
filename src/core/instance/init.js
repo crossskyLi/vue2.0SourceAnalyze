@@ -51,6 +51,24 @@ export function initMixin (Vue: Class<Component>) {
         vm
       )
     }
+    /**
+     * 合并后的vm.$option
+     * vm.$option = {
+                components: {
+                  KeepAlive,
+                  Transition,
+                  TransitionGroup
+                },
+                directives: {
+                  model,
+                  show
+                },
+                filters: {},
+                _base: Vue,
+                el: '#app',
+                data: function mergedInstanceDataFn(){}
+          }
+     * */
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
       initProxy(vm)
