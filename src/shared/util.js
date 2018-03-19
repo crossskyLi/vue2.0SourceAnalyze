@@ -206,6 +206,9 @@ export const bind = Function.prototype.bind
 
 /**
  * Convert an Array-like object to a real Array.
+ * 类数组转为数组
+ * 从数组的最后一个元素开始赋值到新数组的最后一个元素
+ * 直至 i-- 为0
  */
 export function toArray (list: any, start?: number): Array<any> {
   start = start || 0

@@ -248,15 +248,20 @@ const defaultStrat = function (parentVal: any, childVal: any): any {
 
 /**
  * Validate component names
+ * 遍历所有组件的名字
  */
 function checkComponents (options: Object) {
   for (const key in options.components) {
     validateComponentName(key)
   }
 }
-
+/**
+ * 检查是否为有效的组件名字
+ * */
 export function validateComponentName (name: string) {
+  //正则匹配首字母是否为英文
   if (!/^[a-zA-Z][\w-]*$/.test(name)) {
+    // 不合法,警告
     warn(
       'Invalid component name: "' + name + '". Component names ' +
       'can only contain alphanumeric characters and the hyphen, ' +
