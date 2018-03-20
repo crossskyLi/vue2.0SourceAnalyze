@@ -18,6 +18,9 @@ export function initEvents (vm: Component) {
   // init parent attached events
   const listeners = vm.$options._parentListeners
   if (listeners) {
+    /**
+    * 更新组件监听事件
+    * */
     updateComponentListeners(vm, listeners)
   }
 }
@@ -35,7 +38,9 @@ function add (event, fn, once) {
 function remove (event, fn) {
   target.$off(event, fn)
 }
-
+/**
+ * 更新组件监听事件
+ * */
 export function updateComponentListeners (
   vm: Component,
   listeners: Object,

@@ -42,6 +42,10 @@ export function createFnInvoker (fns: Function | Array<Function>): Function {
   return invoker
 }
 
+/**
+ * 更新监听
+ * 添加删除事件绑定function
+ * */
 export function updateListeners (
   on: Object,
   oldOn: Object,

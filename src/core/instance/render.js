@@ -14,7 +14,9 @@ import { resolveSlots } from './render-helpers/resolve-slots'
 import VNode, { createEmptyVNode } from '../vdom/vnode'
 
 import { isUpdatingChildComponent } from './lifecycle'
-
+/**
+ * 这里给vm添加了一些虚拟dom、slot等相关的属性和方法。
+ * */
 export function initRender (vm: Component) {
   vm._vnode = null // the root of the child tree
   vm._staticTrees = null // v-once cached trees

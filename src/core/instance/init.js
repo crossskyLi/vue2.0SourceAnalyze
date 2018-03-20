@@ -77,13 +77,99 @@ export function initMixin (Vue: Class<Component>) {
     }
     // expose real self
     vm._self = vm
+    /**
+    * 主要就是给vm对象添加了$parent、$root、$children属性，以及一些其它的生命周期相关的标识。
+    * */
     initLifecycle(vm)
+    /**
+     * 该方法初始化事件相关的属性，_parentListeners是父组件中绑定在自定义标签上的事件，供子组件处理。
+     * */
     initEvents(vm)
+    /**
+     * 这里给vm添加了一些虚拟dom、slot等相关的属性和方法。
+     * */
     initRender(vm)
+    /**
+     * 调用beforeCreate 钩子函数
+     * */
     callHook(vm, 'beforeCreate')
+    /**
+     * initInjections(vm)和initProvide(vm)
+     * 两个配套使用，用于将父组件_provided中定义的值，通过inject注入到子组件，且这些属性不会被观察
+     * */
+    /**
+     * 在data和props生成前,处理注入
+     * */
     initInjections(vm) // resolve injections before data/props
+    /**
+     * 添加 props、methods、data、computed、watch
+     * 从这里开始就涉及到了Observer、Dep和Watcher，
+     * 而且，这里对数据操作也比较多。
+     * */
     initState(vm)
+    /**
+     *
+     * */
     initProvide(vm) // resolve provide after data/props
+    /**
+     * 页面数据data绑定好
+     * 进入 'create' 周期
+     * */
+    /**
+
+     vm._uid = 0
+     vm._isVue = true
+     vm.$options = {
+        components: {
+          KeepAlive,
+          Transition,
+          TransitionGroup
+        },
+      directives: {
+        model,
+        show
+      },
+      filters: {},
+      _base: Vue,
+        el: '#app',
+        data: function mergedInstanceDataFn(){}
+      }
+     vm._renderProxy = vm
+     vm._self = vm
+
+     // initLifecycle
+     vm.$parent = parent
+     vm.$root = parent ? parent.$root : vm
+
+     vm.$children = []
+     vm.$refs = {}
+
+     vm._watcher = null
+     vm._inactive = null
+     vm._directInactive = false
+     vm._isMounted = false
+     vm._isDestroyed = false
+     vm._isBeingDestroyed = false
+
+     // initEvents
+     vm._events = Object.create(null)
+     vm._hasHookEvent = false
+
+     // initRender
+     vm.$vnode = null
+     vm._vnode = null
+     vm._staticTrees = null
+     vm.$slots = resolveSlots(vm.$options._renderChildren, renderContext)
+     vm.$scopedSlots = emptyObject
+
+     vm._c = (a, b, c, d) => createElement(vm, a, b, c, d, false)
+
+     vm.$createElement = (a, b, c, d) => createElement(vm, a, b, c, d, true)
+     // 在 initState 中添加的属性
+     vm._watchers = []
+     vm._data
+     vm.message
+     * */
     callHook(vm, 'created')
 
     /* istanbul ignore if */
