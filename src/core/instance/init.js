@@ -170,6 +170,10 @@ export function initMixin (Vue: Class<Component>) {
      vm._data
      vm.message
      * */
+    /**
+     * 调用created 钩子函数
+     * created 阶段,基本就是对传入数据的格式化,数据的双向版定,以及一些属性的初始化
+     * */
     callHook(vm, 'created')
 
     /* istanbul ignore if */
@@ -179,7 +183,9 @@ export function initMixin (Vue: Class<Component>) {
       mark(endTag)
       measure(`vue ${vm._name} init`, startTag, endTag)
     }
-
+    /**
+     * 判断是不是有el 选项,如果有,判断是否有template,
+     * */
     if (vm.$options.el) {
       vm.$mount(vm.$options.el)
     }

@@ -119,3 +119,20 @@ export function renderMixin (Vue: Class<Component>) {
     return vnode
   }
 }
+/**
+ * 添加过如下多个函数，这里和render内返回值调用一一对应。
+ Vue.prototype._o = markOnce
+ Vue.prototype._n = toNumber
+ Vue.prototype._s = _toString
+ Vue.prototype._l = renderList
+ Vue.prototype._t = renderSlot
+ Vue.prototype._q = looseEqual
+ Vue.prototype._i = looseIndexOf
+ Vue.prototype._m = renderStatic
+ Vue.prototype._f = resolveFilter
+ Vue.prototype._k = checkKeyCodes
+ Vue.prototype._b = bindObjectProps
+ Vue.prototype._v = createTextVNode
+ Vue.prototype._e = createEmptyVNode
+ Vue.prototype._u = resolveScopedSlots
+ * */

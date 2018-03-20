@@ -13,12 +13,18 @@ const idToTemplate = cached(id => {
   const el = query(id)
   return el && el.innerHTML
 })
-
+/**
+ * mount 保存之前定义的$mount 方法,然后重写
+ * */
 const mount = Vue.prototype.$mount
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean
 ): Component {
+  /**
+   * query 可以理解为document.querySelector ,只不过内部判断了一下el是不是字符串
+   * 不是的话直接返回,所以le也可以直接传入dom元素
+   * */
   el = el && query(el)
 
   /* istanbul ignore if */
@@ -31,6 +37,12 @@ Vue.prototype.$mount = function (
 
   const options = this.$options
   // resolve template/el and convert to render function
+  /**
+   * 判断是否有render函数,如果有就不做处理直接执行mount.call(this,el,hydrating)
+   * 如果没有render函数,则获取template,template 可以是#id/模版字符串,dom元素,
+   * 如果没有template,则获取el 以及其字内容作为模版
+   *
+   * */
   if (!options.render) {
     let template = options.template
     if (template) {
@@ -61,7 +73,10 @@ Vue.prototype.$mount = function (
       if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
         mark('compile')
       }
-
+      /**
+       * compileToFunction 是对最后生成的模版进行解析,生成render
+       * 该方法在src/compile/index
+       * */
       const { render, staticRenderFns } = compileToFunctions(template, {
         shouldDecodeNewlines,
         shouldDecodeNewlinesForHref,
