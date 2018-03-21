@@ -18,6 +18,9 @@ import {
   validateProp
 } from '../util/index'
 
+/**
+ * 活动的原型
+ * */
 export let activeInstance: any = null
 export let isUpdatingChildComponent: boolean = false
 
@@ -62,9 +65,17 @@ export function initLifecycle(vm: Component) {
   vm._isBeingDestroyed = false
 }
 
+/**
+ * 生命周期 数据 update
+ * */
 export function lifecycleMixin(Vue: Class<Component>) {
   Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
     const vm: Component = this
+    /**
+     * 实例挂载,进入beforeUpdate
+     * mountComponent 中可以知道创建Watcher 对象先于vm._isMounted = true
+     * 这里的vm._isMounted 是 false,不会调用beforeUpdate 钩子函数
+     * */
     if (vm._isMounted) {
       callHook(vm, 'beforeUpdate')
     }
@@ -75,6 +86,11 @@ export function lifecycleMixin(Vue: Class<Component>) {
     vm._vnode = vnode
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
+    /**
+     * 会调用 vm.__patch__ ,在这步之前,页面dom还没有真正渲染,
+     * 该方法包裹真实DOM 的创建, 虚拟dom的diff修改,dom的销毁等
+     * 到这里一个Vue 对象的创建到显示到页面流程结束
+     * */
     if (!prevVnode) {
       // initial render
       vm.$el = vm.__patch__(
@@ -87,6 +103,7 @@ export function lifecycleMixin(Vue: Class<Component>) {
       vm.$options._parentElm = vm.$options._refElm = null
     } else {
       // updates
+
       vm.$el = vm.__patch__(prevVnode, vnode)
     }
     activeInstance = prevActiveInstance

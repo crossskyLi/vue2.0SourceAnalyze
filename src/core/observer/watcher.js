@@ -9,11 +9,11 @@ import {
   handleError
 } from '../util/index'
 
-import { traverse } from './traverse'
-import { queueWatcher } from './scheduler'
-import Dep, { pushTarget, popTarget } from './dep'
+import {traverse} from './traverse'
+import {queueWatcher} from './scheduler'
+import Dep, {pushTarget, popTarget} from './dep'
 
-import type { SimpleSet } from '../util/index'
+import type {SimpleSet} from '../util/index'
 
 let uid = 0
 
@@ -40,13 +40,11 @@ export default class Watcher {
   getter: Function;
   value: any;
 
-  constructor (
-    vm: Component,
-    expOrFn: string | Function,
-    cb: Function,
-    options?: ?Object,
-    isRenderWatcher?: boolean
-  ) {
+  constructor(vm: Component,
+              expOrFn: string | Function,
+              cb: Function,
+              options?: ?Object,
+              isRenderWatcher?: boolean) {
     this.vm = vm
     if (isRenderWatcher) {
       vm._watcher = this
@@ -94,7 +92,8 @@ export default class Watcher {
        * */
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
-        this.getter = function () {}
+        this.getter = function () {
+        }
         process.env.NODE_ENV !== 'production' && warn(
           `Failed watching path: "${expOrFn}" ` +
           'Watcher only accepts simple dot-delimited paths. ' +
@@ -114,7 +113,7 @@ export default class Watcher {
   /**
    * Evaluate the getter, and re-collect dependencies.
    */
-  get () {
+  get() {
     pushTarget(this)
     let value
     const vm = this.vm
@@ -141,7 +140,7 @@ export default class Watcher {
   /**
    * Add a dependency to this directive.
    */
-  addDep (dep: Dep) {
+  addDep(dep: Dep) {
     const id = dep.id
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id)
@@ -155,7 +154,7 @@ export default class Watcher {
   /**
    * Clean up for dependency collection.
    */
-  cleanupDeps () {
+  cleanupDeps() {
     let i = this.deps.length
     while (i--) {
       const dep = this.deps[i]
@@ -176,14 +175,23 @@ export default class Watcher {
   /**
    * Subscriber interface.
    * Will be called when a dependency changes.
+   *
    */
-  update () {
+  update() {
     /* istanbul ignore else */
     if (this.lazy) {
       this.dirty = true
     } else if (this.sync) {
+      /**
+       * 在渲染模版过程中,调用数据对象的getter 时,建立两者之间的关系
+       * 同一个时刻只有一个watcher 处于激活状态,把当前watcher 绑定在Dep.target(方便在Observer内获取)
+       * 回调结束摧毁Dep.target
+       * */
       this.run()
     } else {
+      /**
+       * 队列化Watch
+       * */
       queueWatcher(this)
     }
   }
@@ -192,7 +200,7 @@ export default class Watcher {
    * Scheduler job interface.
    * Will be called by the scheduler.
    */
-  run () {
+  run() {
     if (this.active) {
       const value = this.get()
       if (
@@ -206,6 +214,10 @@ export default class Watcher {
         // set new value
         const oldValue = this.value
         this.value = value
+        /**
+         * 把当前watcher 绑定在Dep.target(方便在Observer内获取)
+         * 回调结束摧毁Dep.target
+         * */
         if (this.user) {
           try {
             this.cb.call(this.vm, value, oldValue)
@@ -223,7 +235,7 @@ export default class Watcher {
    * Evaluate the value of the watcher.
    * This only gets called for lazy watchers.
    */
-  evaluate () {
+  evaluate() {
     this.value = this.get()
     this.dirty = false
   }
@@ -231,7 +243,7 @@ export default class Watcher {
   /**
    * Depend on all deps collected by this watcher.
    */
-  depend () {
+  depend() {
     let i = this.deps.length
     while (i--) {
       this.deps[i].depend()
@@ -241,7 +253,7 @@ export default class Watcher {
   /**
    * Remove self from all dependencies' subscriber list.
    */
-  teardown () {
+  teardown() {
     if (this.active) {
       // remove self from vm's watcher list
       // this is a somewhat expensive operation so we skip it

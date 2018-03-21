@@ -20,6 +20,9 @@ const methodsToPatch = [
 
 /**
  * Intercept mutating methods and emit events
+ * 整体上还是调用数组相应的方法来操作value, 只不过操作之后,添加了相关的watcher 的更新,
+ * push,unshift splice 参数大于2时候,要重新调用ob.observeArray
+ * 因为这三种情况都是像数组中添加新的元素,所以需要重新观察每个子元素
  */
 methodsToPatch.forEach(function (method) {
   // cache original method
