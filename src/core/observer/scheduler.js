@@ -34,6 +34,7 @@ function resetSchedulerState () {
 
 /**
  * Flush both queues and run the watchers.
+ *
  */
 function flushSchedulerQueue () {
   flushing = true
@@ -47,6 +48,9 @@ function flushSchedulerQueue () {
   //    user watchers are created before the render watcher)
   // 3. If a component is destroyed during a parent component's watcher run,
   //    its watchers can be skipped.
+  /**
+   * 按id 大小从小到大将watcher 排序
+   * */
   queue.sort((a, b) => a.id - b.id)
 
   // do not cache length because more watchers might be pushed
@@ -55,6 +59,10 @@ function flushSchedulerQueue () {
     watcher = queue[index]
     id = watcher.id
     has[id] = null
+    /**
+     * 依次执行它的run 方法, vm._watcher 保存的是渲染模版时创建的watcher ,所以如果队列中有该watcher
+     * 则说明模版有变化,随之调用 'update' 钩子函数
+     * */
     watcher.run()
     // in dev build, check and stop circular updates.
     if (process.env.NODE_ENV !== 'production' && has[id] != null) {
@@ -123,6 +131,11 @@ function callActivatedHooks (queue) {
  * Push a watcher into the watcher queue.
  * Jobs with duplicate IDs will be skipped unless it's
  * pushed when the queue is being flushed.
+ *
+ * watcher 有从小到大的唯一id ,在页面更新的时候,会按照一定的顺序依次更新,
+ * 这里做了一个判断,如果watcher 列表正在更新,则把新的watcher 添加到队列的最后位置并更新
+ * 否则,在下一个nextTick 中执行flushSchedulerQueue (Scheduler 调度器 ,flush 刷新)
+ *
  */
 export function queueWatcher (watcher: Watcher) {
   const id = watcher.id
