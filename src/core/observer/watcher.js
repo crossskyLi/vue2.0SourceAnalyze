@@ -53,12 +53,22 @@ export default class Watcher {
     }
     vm._watchers.push(this)
     // options
+
     if (options) {
+      /**
+       * 有选项,两次取反,获取Boolean
+       * */
+      /**
+       * 在computed属性中创建的Watcher会传入true。
+       * */
       this.deep = !!options.deep
       this.user = !!options.user
       this.lazy = !!options.lazy
       this.sync = !!options.sync
     } else {
+      /**
+       * 这里四个参数默认为false
+       * */
       this.deep = this.user = this.lazy = this.sync = false
     }
     this.cb = cb
@@ -74,8 +84,14 @@ export default class Watcher {
       : ''
     // parse expression for getter
     if (typeof expOrFn === 'function') {
+      /**
+       * expOrFn 是方法, expOrFn 也就是 updateComponent 赋值给this.getter
+       * */
       this.getter = expOrFn
     } else {
+      /**
+       *
+       * */
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
         this.getter = function () {}
@@ -87,6 +103,9 @@ export default class Watcher {
         )
       }
     }
+    /**
+     * 调用this.getter ,updateComponent 方法会被调用,可以沿着updateComponent一路找
+     * */
     this.value = this.lazy
       ? undefined
       : this.get()

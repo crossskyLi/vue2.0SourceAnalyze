@@ -59,9 +59,14 @@ export function renderMixin (Vue: Class<Component>) {
   Vue.prototype.$nextTick = function (fn: Function) {
     return nextTick(fn, this)
   }
-
+  /**
+   * vm._render 定义,
+   * */
   Vue.prototype._render = function (): VNode {
     const vm: Component = this
+    /**
+     * 从vm.$options 中取出 render 函数和_parentVnode
+     * */
     const { render, _parentVnode } = vm.$options
 
     // reset _rendered flag on slots for duplicate slot check
@@ -82,6 +87,17 @@ export function renderMixin (Vue: Class<Component>) {
     // render self
     let vnode
     try {
+      /**
+       * 调用过程,使用的this 指向的是vm.renderProxy,
+       * 是一个Proxy代理对象或者vm本身,暂且把它看作vm本身
+       * */
+      /**
+       * $createElement
+       * _v 是 createTextVNode , 创建一个文本节点,
+       * _s 是 toString 把绑定的属性转为字符串,
+       * render 函数返回的是一个VNode 对象,也就是 虚拟dom对象,
+       * 它的返回值作为vm._update 的第一个参数,
+       * */
       vnode = render.call(vm._renderProxy, vm.$createElement)
     } catch (e) {
       handleError(e, vm, `render`)

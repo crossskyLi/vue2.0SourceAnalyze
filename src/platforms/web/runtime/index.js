@@ -34,11 +34,17 @@ extend(Vue.options.components, platformComponents)
 Vue.prototype.__patch__ = inBrowser ? patch : noop
 
 // public mount method
+/**
+ *
+ * */
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean
 ): Component {
   el = el && inBrowser ? query(el) : undefined
+  /**
+   * 返回mountComponent 执行结果
+   * */
   return mountComponent(this, el, hydrating)
 }
 
@@ -46,6 +52,9 @@ Vue.prototype.$mount = function (
 /* istanbul ignore next */
 if (inBrowser) {
   setTimeout(() => {
+    /**
+     * vue 开发工具扩展
+     * */
     if (config.devtools) {
       if (devtools) {
         devtools.emit('init', Vue)

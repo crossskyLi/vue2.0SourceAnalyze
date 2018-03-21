@@ -2,12 +2,12 @@
 
 import config from '../config'
 import Watcher from '../observer/watcher'
-import { mark, measure } from '../util/perf'
-import { createEmptyVNode } from '../vdom/vnode'
-import { updateComponentListeners } from './events'
-import { resolveSlots } from './render-helpers/resolve-slots'
-import { toggleObserving } from '../observer/index'
-import { pushTarget, popTarget } from '../observer/dep'
+import {mark, measure} from '../util/perf'
+import {createEmptyVNode} from '../vdom/vnode'
+import {updateComponentListeners} from './events'
+import {resolveSlots} from './render-helpers/resolve-slots'
+import {toggleObserving} from '../observer/index'
+import {pushTarget, popTarget} from '../observer/dep'
 
 import {
   warn,
@@ -20,12 +20,13 @@ import {
 
 export let activeInstance: any = null
 export let isUpdatingChildComponent: boolean = false
+
 /**
  * 初始化生命周期
  * 主要就是给vm对象添加了$parent、$root、$children属性，
  * 以及一些其它的生命周期相关的标识。
  * */
-export function initLifecycle (vm: Component) {
+export function initLifecycle(vm: Component) {
   const options = vm.$options
 
   // locate first non-abstract parent
@@ -61,7 +62,7 @@ export function initLifecycle (vm: Component) {
   vm._isBeingDestroyed = false
 }
 
-export function lifecycleMixin (Vue: Class<Component>) {
+export function lifecycleMixin(Vue: Class<Component>) {
   Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
     const vm: Component = this
     if (vm._isMounted) {
@@ -155,11 +156,9 @@ export function lifecycleMixin (Vue: Class<Component>) {
   }
 }
 
-export function mountComponent (
-  vm: Component,
-  el: ?Element,
-  hydrating?: boolean
-): Component {
+export function mountComponent(vm: Component,
+                               el: ?Element,
+                               hydrating?: boolean): Component {
   vm.$el = el
   if (!vm.$options.render) {
     vm.$options.render = createEmptyVNode
@@ -181,6 +180,9 @@ export function mountComponent (
       }
     }
   }
+  /**
+   * 调用beforeMount 钩子函数
+   * */
   callHook(vm, 'beforeMount')
 
   let updateComponent
@@ -193,6 +195,9 @@ export function mountComponent (
       const endTag = `vue-perf-end:${id}`
 
       mark(startTag)
+      /**
+       * vm._render() 函数,在src/core/instance/render.js
+       * */
       const vnode = vm._render()
       mark(endTag)
       measure(`vue ${name} render`, startTag, endTag)
@@ -209,27 +214,34 @@ export function mountComponent (
   }
 
   // we set this to vm._watcher inside the watcher's constructor
+  // 把 vm._watcher 设置在 watcher 的构造函数里
   // since the watcher's initial patch may call $forceUpdate (e.g. inside child
   // component's mounted hook), which relies on vm._watcher being already defined
+  // 因为观察者的初始化可能会调用$forceUpdate（例如，子组件的挂载钩子），它依赖于vm._watcher已经被定义
+  /**
+   * 新建一个Watcher 对象,绑定在vm._watcher 上
+   * */
   new Watcher(vm, updateComponent, noop, null, true /* isRenderWatcher */)
   hydrating = false
 
   // manually mounted instance, call mounted on self
   // mounted is called for render-created child components in its inserted hook
+  /**
+   * 判断如果 vm.$vnode == null , 则设置vm._isMounted = true ,调用mounted 函数
+   * */
   if (vm.$vnode == null) {
     vm._isMounted = true
     callHook(vm, 'mounted')
   }
+  // 最后返回 vm 对象
   return vm
 }
 
-export function updateChildComponent (
-  vm: Component,
-  propsData: ?Object,
-  listeners: ?Object,
-  parentVnode: MountedComponentVNode,
-  renderChildren: ?Array<VNode>
-) {
+export function updateChildComponent(vm: Component,
+                                     propsData: ?Object,
+                                     listeners: ?Object,
+                                     parentVnode: MountedComponentVNode,
+                                     renderChildren: ?Array<VNode>) {
   if (process.env.NODE_ENV !== 'production') {
     isUpdatingChildComponent = true
   }
@@ -289,14 +301,14 @@ export function updateChildComponent (
   }
 }
 
-function isInInactiveTree (vm) {
+function isInInactiveTree(vm) {
   while (vm && (vm = vm.$parent)) {
     if (vm._inactive) return true
   }
   return false
 }
 
-export function activateChildComponent (vm: Component, direct?: boolean) {
+export function activateChildComponent(vm: Component, direct?: boolean) {
   if (direct) {
     vm._directInactive = false
     if (isInInactiveTree(vm)) {
@@ -314,7 +326,7 @@ export function activateChildComponent (vm: Component, direct?: boolean) {
   }
 }
 
-export function deactivateChildComponent (vm: Component, direct?: boolean) {
+export function deactivateChildComponent(vm: Component, direct?: boolean) {
   if (direct) {
     vm._directInactive = true
     if (isInInactiveTree(vm)) {
@@ -329,11 +341,12 @@ export function deactivateChildComponent (vm: Component, direct?: boolean) {
     callHook(vm, 'deactivated')
   }
 }
+
 /**
-* 添加事件钩子 ,hook beforeCreate 等
-*
-* */
-export function callHook (vm: Component, hook: string) {
+ * 添加事件钩子 ,hook beforeCreate 等
+ *
+ * */
+export function callHook(vm: Component, hook: string) {
   // #7573 disable dep collection when invoking lifecycle hooks
   pushTarget()
   const handlers = vm.$options[hook]
