@@ -13,8 +13,8 @@ import { genStaticKeys } from 'shared/util'
 import { isUnaryTag, canBeLeftOpenTag } from './util'
 
 export const baseOptions: CompilerOptions = {
-  expectHTML: true,
-  modules,
+  expectHTML: true, // 是否期望HTML
+  modules, // 包括klass 和style, 对模版中类和样式的解析
   directives,
   isPreTag,
   isUnaryTag,
