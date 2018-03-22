@@ -16,7 +16,9 @@ function createFunction (code, errors) {
     return noop
   }
 }
-
+/**
+ * 编译对象
+ * */
 export function createCompileToFunctionFn (compile: Function): Function {
   const cache = Object.create(null)
 
@@ -30,6 +32,9 @@ export function createCompileToFunctionFn (compile: Function): Function {
     delete options.warn
 
     /* istanbul ignore if */
+    /**
+     * 安全策略检测
+     * */
     if (process.env.NODE_ENV !== 'production') {
       // detect possible CSP restriction
       try {
@@ -46,7 +51,9 @@ export function createCompileToFunctionFn (compile: Function): Function {
         }
       }
     }
-
+    /**
+     * 首先从缓存中获取编译结果
+     * */
     // check cache
     const key = options.delimiters
       ? String(options.delimiters) + template
@@ -54,10 +61,15 @@ export function createCompileToFunctionFn (compile: Function): Function {
     if (cache[key]) {
       return cache[key]
     }
-
+    /**
+     * 没有则调用compile 函数编译
+     * */
     // compile
     const compiled = compile(template, options)
-
+    /**
+     * 检查是否在开发环境,
+     * 开发环境,抛出编译过程中产生的错误,最终返回一个含有render 函数,和staticRenderFns 数组的对象,并把它放入缓存
+     * */
     // check compilation errors/tips
     if (process.env.NODE_ENV !== 'production') {
       if (compiled.errors && compiled.errors.length) {
@@ -75,6 +87,9 @@ export function createCompileToFunctionFn (compile: Function): Function {
     // turn code into functions
     const res = {}
     const fnGenErrors = []
+    /**
+     * 返回一个含有render 函数,和staticRenderFns 数组的对象
+     * */
     res.render = createFunction(compiled.render, fnGenErrors)
     res.staticRenderFns = compiled.staticRenderFns.map(code => {
       return createFunction(code, fnGenErrors)
@@ -93,7 +108,7 @@ export function createCompileToFunctionFn (compile: Function): Function {
         )
       }
     }
-
+    // 最终返回一个含有render 函数,和staticRenderFns 数组的对象,并把它放入缓存
     return (cache[key] = res)
   }
 }
