@@ -13,9 +13,24 @@ import { makeMap, no } from 'shared/util'
 import { isNonPhrasingTag } from 'web/compiler/util'
 
 // Regular Expressions for parsing tags and attributes
+/**
+ * ([^\s"'<>\/=]+) --> 非"'<>/= 字符，并捕获匹配到的内容，主要用于匹配属性名
+ * 
+ * (?:\s*(=) --> 匹配 = 但是不捕获
+ * 
+ * (?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)) --> 主要用于匹配属性值，因为属性值可以包含单引号或者双引号，也可以不用引号
+ * 这里分三种情况：
+ * 1. 双引号 --> "([^"]*) 主要是捕获双引号括起来非 " 内容
+ * 2. 单引号括起来 /'([^']*)' ，主要是捕获单引号括起来非 ' 内容
+ * 3. 没有引号/([^\s"'=<>]+)/ 捕获多个非空白字符或非 " ' = <> `` 字符的内容
+ * 把前三个整合起来，用于匹配一个完整的属性，并且允许属性名、等号、属性值之前可以有多个空白字符。
+ */
 const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/
 // could use https://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-QName
 // but for Vue templates we can enforce a simple charset
+/**
+ * 用来
+ */
 const ncname = '[a-zA-Z_][\\w\\-\\.]*'
 const qnameCapture = `((?:${ncname}\\:)?${ncname})`
 const startTagOpen = new RegExp(`^<${qnameCapture}`)

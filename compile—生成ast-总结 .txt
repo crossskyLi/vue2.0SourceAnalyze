@@ -1,0 +1,19 @@
+整体分为以下几步：
+
+1、 定义基本的ast结构
+
+2、 对ast进行预处理(preTransforms)
+
+3、 解析v-pre、v-if、v-for、v-once、slot、key、ref等指令。
+
+4、 对ast处理(transforms)
+
+5、 解析v-bind、v-on以及普通属性
+
+6、 根节点或v-else块等处理
+
+7、 模板元素父子关系的建立
+
+8、 对ast后处理(postTransforms)
+
+ast -> Abstract Syntax Tree ( 抽象语法树)

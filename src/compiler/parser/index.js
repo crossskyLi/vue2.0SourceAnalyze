@@ -1,12 +1,12 @@
 /* @flow */
 
 import he from 'he'
-import {parseHTML} from './html-parser'
-import {parseText} from './text-parser'
-import {parseFilters} from './filter-parser'
-import {genAssignmentCode} from '../directives/model'
-import {extend, cached, no, camelize} from 'shared/util'
-import {isIE, isEdge, isServerRendering} from 'core/util/env'
+import { parseHTML } from './html-parser'
+import { parseText } from './text-parser'
+import { parseFilters } from './filter-parser'
+import { genAssignmentCode } from '../directives/model'
+import { extend, cached, no, camelize } from 'shared/util'
+import { isIE, isEdge, isServerRendering } from 'core/util/env'
 
 import {
   addProp,
@@ -28,15 +28,20 @@ export const onRE = /^@|^v-on:/
  * */
 export const dirRE = /^v-|^@|^:/
 /**
- *
- *
+ * forAliasRE 匹配v-for 中的属性值，比如item in items (item ,index of items)
  * */
 export const forAliasRE = /([^]*?)\s+(?:in|of)\s+([^]*)/
+/**
+ * forIteratorRE 是对forAliasRE 中捕获的第一部分内容进行拆解，v-for 中in / of 前最后可以有三个逗号分割的参数
+ */
 export const forIteratorRE = /,([^,\}\]]*)(?:,([^,\}\]]*))?$/
-const stripParensRE = /^\(|\)$/g
 
+const stripParensRE = /^\(|\)$/g
+// argRE 匹配并捕获' : '开头的属性。
 const argRE = /:(.*)$/
+// bindRE 匹配 ‘ : ’ 或者 v-bind 开头的属性，即绑定数据的语法
 export const bindRE = /^:|^v-bind:/
+// modifierRE 是匹配@click.stop ,@keyup.enter 等属性中的修饰符
 const modifierRE = /\.[^.]+/g
 
 const decodeHTMLCached = cached(he.decode)
@@ -54,8 +59,8 @@ let platformGetTagNamespace
 type Attr = { name: string; value: string };
 
 export function createASTElement(tag: string,
-                                 attrs: Array<Attr>,
-                                 parent: ASTElement | void): ASTElement {
+  attrs: Array<Attr>,
+  parent: ASTElement | void): ASTElement {
   return {
     type: 1,
     tag,
@@ -70,7 +75,7 @@ export function createASTElement(tag: string,
  * Convert HTML string to AST.
  */
 export function parse(template: string,
-                      options: CompilerOptions): ASTElement | void {
+  options: CompilerOptions): ASTElement | void {
   warn = options.warn || baseWarn
 
   platformIsPreTag = options.isPreTag || no
@@ -213,7 +218,7 @@ export function parse(template: string,
         } else if (element.slotScope) { // scoped slot
           currentParent.plain = false
           const name = element.slotTarget || '"default"'
-          ;(currentParent.scopedSlots || (currentParent.scopedSlots = {}))[name] = element
+            ; (currentParent.scopedSlots || (currentParent.scopedSlots = {}))[name] = element
         } else {
           currentParent.children.push(element)
           element.parent = currentParent
@@ -552,8 +557,8 @@ function processAttrs(el) {
           }
         }
         if (isProp || (
-            !el.component && platformMustUseProp(el.tag, el.attrsMap.type, name)
-          )) {
+          !el.component && platformMustUseProp(el.tag, el.attrsMap.type, name)
+        )) {
           addProp(el, name, value)
         } else {
           addAttr(el, name, value)

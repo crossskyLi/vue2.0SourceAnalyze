@@ -13,12 +13,16 @@ function Vue (options) {
   }
   this._init(options)
 }
-
+// _init
 initMixin(Vue)
 
+// $set $delete $watch
 stateMixin(Vue)
+// $on $once $off $emit
 eventsMixin(Vue)
+// _update $forceUpdate $destroy
 lifecycleMixin(Vue)
+// $nextTick _render 以及多个内部调用的方法
 renderMixin(Vue)
 
 export default Vue
