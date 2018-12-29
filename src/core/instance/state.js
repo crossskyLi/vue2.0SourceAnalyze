@@ -34,7 +34,7 @@ const sharedPropertyDefinition = {
   get: noop,
   set: noop
 }
-
+// 代理 ,双向绑定
 export function proxy (target: Object, sourceKey: string, key: string) {
   sharedPropertyDefinition.get = function proxyGetter () {
     return this[sourceKey][key]
@@ -207,11 +207,13 @@ function initComputed (vm: Component, computed: Object) {
   }
 }
 
+// computed 属性
 export function defineComputed (
   target: any,
   key: string,
   userDef: Object | Function
 ) {
+  // 是否缓存,取决于是不是服务器渲染
   const shouldCache = !isServerRendering()
   if (typeof userDef === 'function') {
     sharedPropertyDefinition.get = shouldCache
