@@ -136,6 +136,7 @@ export function remove (arr: Array<any>, item: any): Array<any> | void {
 
 /**
  * Check whether the object has the property.
+ * 检查 对象是否有某个属性
  */
 const hasOwnProperty = Object.prototype.hasOwnProperty
 export function hasOwn (obj: Object | Array<*>, key: string): boolean {
@@ -225,6 +226,7 @@ export function toArray (list: any, start?: number): Array<any> {
 
 /**
  * Mix properties into target object.
+ * 将属性混合到目标对象中。
  */
 export function extend (to: Object, _from: ?Object): Object {
   for (const key in _from) {

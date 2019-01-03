@@ -53,7 +53,7 @@ function mergeData (to: Object, from: ?Object): Object {
     key = keys[i]
     toVal = to[key]
     fromVal = from[key]
-    if (!hasOwn(to, key)) {
+    if (!hasOwn(to, key)) { // 检查 对象是否有某个属性
       set(to, key, fromVal)
     } else if (isPlainObject(toVal) && isPlainObject(fromVal)) {
       mergeData(toVal, fromVal)
@@ -401,7 +401,7 @@ export function mergeOptions (
   /**
    * options.extends
    * */
-  const extendsFrom = child.extends
+  const extendsFrom = child.extends // 如果有扩展,对扩展做同样操作
   if (extendsFrom) {
     /**
      * mergeOptions 是Vue中处理属性的合并策略的地方
@@ -422,7 +422,7 @@ export function mergeOptions (
     mergeField(key)
   }
   for (key in child) {
-    if (!hasOwn(parent, key)) {
+    if (!hasOwn(parent, key)) { // 检查parent 是否有key 属性
       mergeField(key)
     }
   }
