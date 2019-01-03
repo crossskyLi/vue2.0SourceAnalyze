@@ -13,6 +13,7 @@ import { extend, mergeOptions, formatComponentName } from '../util/index'
 let uid = 0
 
 export function initMixin (Vue: Class<Component>) {
+  // 原型上添加_init 后面会调用
   Vue.prototype._init = function (options?: Object) {
     const vm: Component = this
     // a uid
@@ -37,6 +38,7 @@ export function initMixin (Vue: Class<Component>) {
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
+      // 优化内部组件实例化,因为动态选项合并非常慢，而且没有一个是内部组件选项需要特殊处理。
       // 内部使用Vnode部分使用
       initInternalComponent(vm, options)
     } else {
@@ -195,6 +197,7 @@ export function initMixin (Vue: Class<Component>) {
 export function initInternalComponent (vm: Component, options: InternalComponentOptions) {
   const opts = vm.$options = Object.create(vm.constructor.options)
   // doing this because it's faster than dynamic enumeration.
+  // 直接取属性,这样做是因为它比动态枚举更快
   const parentVnode = options._parentVnode
   opts.parent = options.parent
   opts._parentVnode = parentVnode
@@ -244,10 +247,14 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
     if (superOptions !== cachedSuperOptions) {
       // super option changed,
       // need to resolve new options.
+      // super option 改变,需要处理新的options
       Ctor.superOptions = superOptions
+
       // check if there are any late-modified/attached options (#4976)
+      // 检查是否会有后期修改或者附加的options
       const modifiedOptions = resolveModifiedOptions(Ctor)
       // update base extend options
+      // 更新基础扩展options
       if (modifiedOptions) {
         extend(Ctor.extendOptions, modifiedOptions)
       }
@@ -265,6 +272,7 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
   return options
 }
 
+// 处理修改的options
 function resolveModifiedOptions (Ctor: Class<Component>): ?Object {
   let modified
   const latest = Ctor.options
@@ -282,6 +290,7 @@ function resolveModifiedOptions (Ctor: Class<Component>): ?Object {
 function dedupe (latest, extended, sealed) {
   // compare latest and sealed to ensure lifecycle hooks won't be duplicated
   // between merges
+  // 比较最新的和密封的，以确保生命周期钩子不会在合并之间重复
   if (Array.isArray(latest)) {
     const res = []
     sealed = Array.isArray(sealed) ? sealed : [sealed]
