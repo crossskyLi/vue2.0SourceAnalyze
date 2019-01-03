@@ -8,12 +8,13 @@ import { warn } from '../util/index'
 function Vue (options) {
   if (process.env.NODE_ENV !== 'production' &&
     !(this instanceof Vue)
-  ) {
+  ) { // 判断是否为 new 关键词创建
     warn('Vue is a constructor and should be called with the `new` keyword')
   }
   this._init(options)
 }
 // _init
+// 先执行 ./init 中initMixin
 initMixin(Vue)
 
 // $set $delete $watch
