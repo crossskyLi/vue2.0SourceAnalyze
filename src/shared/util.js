@@ -97,6 +97,7 @@ export function toNumber (val: string): number | string {
 /**
  * Make a map and return a function for checking if a key
  * is in that map.
+ * 创建一个映射并返回一个用于检查该映射中是否有键的函数。
  */
 export function makeMap (
   str: string,
