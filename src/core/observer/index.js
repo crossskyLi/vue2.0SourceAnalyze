@@ -48,7 +48,7 @@
  *   watcher 通过dep(dependency) 和data 联系在一起, 并出发 re-render
  *  */
 
-import Dep from './dedinp'
+import Dep from './dep'
 import VNode from '../vdom/vnode'
 import {arrayMethods} from './array'
 import {
