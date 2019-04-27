@@ -150,6 +150,7 @@ function applyNS (vnode, ns, force) {
 // ref #5318
 // necessary to ensure parent re-render when deep bindings like :style and
 // :class are used on slot nodes
+//当在槽节点上使用诸如：style和：class之类的深度绑定时，必须确保父级重新呈现
 function registerDeepBindings (data) {
   if (isObject(data.style)) {
     traverse(data.style)
