@@ -6,6 +6,7 @@ import { warn, makeMap, isNative } from '../util/index'
 let initProxy
 
 if (process.env.NODE_ENV !== 'production') {
+  //makeMap 创建一个映射并返回一个用于检查该映射中是否有键的函数。 
   const allowedGlobals = makeMap(
     'Infinity,undefined,NaN,isFinite,isNaN,' +
     'parseFloat,parseInt,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,' +
@@ -28,9 +29,10 @@ if (process.env.NODE_ENV !== 'production') {
     typeof Proxy !== 'undefined' && isNative(Proxy)
 
   if (hasProxy) {
+    // 代理 设置keycodes 的时候做个监察,是否为保护keycode
     const isBuiltInModifier = makeMap('stop,prevent,self,ctrl,shift,alt,meta,exact')
     config.keyCodes = new Proxy(config.keyCodes, {
-      set (target, key, value) {
+      set(target, key, value) {
         if (isBuiltInModifier(key)) {
           warn(`Avoid overwriting built-in modifier in config.keyCodes: .${key}`)
           return false
@@ -45,6 +47,7 @@ if (process.env.NODE_ENV !== 'production') {
   const hasHandler = {
     has (target, key) {
       const has = key in target
+      // 判断是否为可以
       const isAllowed = allowedGlobals(key) || key.charAt(0) === '_'
       if (!has && !isAllowed) {
         warnNonPresent(target, key)
