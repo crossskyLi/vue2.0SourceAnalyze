@@ -37,7 +37,7 @@ let uid = 0
  *
  * 创建Watcher 会调用this.get ,也就是这里的updateComponent
  * 在render 的过程中,会调用data的 getter 方法,以此来建立数据的双向绑定,
- * 当数据改变时,会宠幸出发updateComponent 。
+ * 当数据改变时,会重新触发updateComponent 。
  * 这里this.get 返回值是undefined ,所以主要是用于渲染模版
  *
  * -- 监听数据 --
@@ -168,6 +168,7 @@ export default class Watcher {
 
   /**
    * Add a dependency to this directive.
+   * 向该指令添加依赖项
    */
   addDep(dep: Dep) {
     const id = dep.id
