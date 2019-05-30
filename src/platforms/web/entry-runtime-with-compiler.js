@@ -77,6 +77,7 @@ Vue.prototype.$mount = function (
        * compileToFunction 是对最后生成的模版进行解析,生成render
        * 该方法在src/compile/index
        * */
+      /* todo adn这里可以试试看下他是怎么compile自定义组件的*/
       const { render, staticRenderFns } = compileToFunctions(template, {
         shouldDecodeNewlines,
         shouldDecodeNewlinesForHref,
