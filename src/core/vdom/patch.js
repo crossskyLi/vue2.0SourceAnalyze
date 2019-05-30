@@ -314,6 +314,7 @@ export function createPatchFunction (backend) {
   // set scope id attribute for scoped CSS.
   // this is implemented as a special case to avoid the overhead
   // of going through the normal attribute patching process.
+  // 设置作用域CSS的作用域id属性。这是作为一种特殊情况实现的，以避免执行常规属性修补过程的开销。
   function setScope (vnode) {
     let i
     if (isDef(i = vnode.fnScopeId)) {
@@ -577,6 +578,7 @@ export function createPatchFunction (backend) {
   const isRenderedModule = makeMap('attrs,class,staticClass,staticStyle,key')
 
   // Note: this is a browser-only function so we can assume elms are DOM nodes.
+  // 这个是仅浏览器使用的函数,可以把elms 当做dom节点
   function hydrate (elm, vnode, insertedVnodeQueue, inVPre) {
     let i
     const { tag, data, children } = vnode

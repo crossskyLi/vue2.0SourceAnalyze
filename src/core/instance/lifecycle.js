@@ -157,17 +157,21 @@ export function lifecycleMixin(Vue: Class<Component>) {
     // call the last hook...
     vm._isDestroyed = true
     // invoke destroy hooks on current rendered tree
+    // 在当前rendered 的vnode树上的调用销毁钩子
     vm.__patch__(vm._vnode, null)
     // fire destroyed hook
+    // 启动销毁的hook
     callHook(vm, 'destroyed')
     // turn off all instance listeners.
     vm.$off()
     // remove __vue__ reference
+    // 移除 __vue__ 的引用
     if (vm.$el) {
       vm.$el.__vue__ = null
     }
     // release circular reference (#6759)
     // vm.$vnode 表示 Vue 实例的父虚拟 Node
+    // 释放循环引用
     if (vm.$vnode) {
       vm.$vnode.parent = null
     }
