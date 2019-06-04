@@ -237,9 +237,9 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
   //   filters:{},
   //   _base:Vue,
   // }
-/**
- * Ctor.super是在调用Vue.extend时候,才会添加的属性,
- * */
+  /**
+   * Ctor.super是在调用Vue.extend时候,才会添加的属性,
+   * */
 
   if (Ctor.super) {
     const superOptions = resolveConstructorOptions(Ctor.super)

@@ -243,6 +243,10 @@ export function mountComponent(vm: Component,
   /**
    * 新建一个Watcher 对象,绑定在vm._watcher 上
    * */
+  /**
+   *  初始化Watcher 起到的作用,初始化的时候执行回调函数, 
+   * 另外,当vm实例中的检测的数据发生变化的时候执行回调函数
+   */
   new Watcher(vm, updateComponent, noop, null, true /* isRenderWatcher */)
   hydrating = false
 

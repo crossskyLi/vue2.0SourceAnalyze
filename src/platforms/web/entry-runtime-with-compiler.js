@@ -66,6 +66,7 @@ Vue.prototype.$mount = function (
         return this
       }
     } else if (el) {
+      // compile 版本 会进这里
       template = getOuterHTML(el)
     }
     if (template) {

@@ -73,6 +73,7 @@ export function createASTElement(tag: string,
 
 /**
  * Convert HTML string to AST.
+ * createCompilerCreator => parse 进入模板编译成vnode
  */
 export function parse(template: string,
   options: CompilerOptions): ASTElement | void {
