@@ -9,11 +9,11 @@ import {
   handleError
 } from '../util/index'
 
-import {traverse} from './traverse'
-import {queueWatcher} from './scheduler'
-import Dep, {pushTarget, popTarget} from './dep'
+import { traverse } from './traverse'
+import { queueWatcher } from './scheduler'
+import Dep, { pushTarget, popTarget } from './dep'
 
-import type {SimpleSet} from '../util/index'
+import type { SimpleSet } from '../util/index'
 
 let uid = 0
 
@@ -69,15 +69,18 @@ export default class Watcher {
   getter: Function;
   value: any;
 
-  constructor(vm: Component,
-              expOrFn: string | Function, // 重要参数
-              cb: Function,
-              options?: ?Object,
-              isRenderWatcher?: boolean) {
+  constructor(
+    vm: Component,
+    expOrFn: string | Function, // 重要参数
+    cb: Function,
+    options?: ?Object,
+    isRenderWatcher?: boolean
+  ) {
     this.vm = vm
     if (isRenderWatcher) {
       vm._watcher = this
     }
+    /* 在 vm 的_watchers 添加这个watcher */
     vm._watchers.push(this)
     // options
 
@@ -264,6 +267,8 @@ export default class Watcher {
   /**
    * Evaluate the value of the watcher.
    * This only gets called for lazy watchers.
+   * 计算watcher 的value ,
+   * 仅仅被懒运行 watcher 调用
    */
   evaluate() {
     this.value = this.get()
