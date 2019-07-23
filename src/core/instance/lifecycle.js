@@ -170,6 +170,7 @@ export function lifecycleMixin(Vue: Class<Component>) {
       vm.$el.__vue__ = null
     }
     // release circular reference (#6759)
+    // vm.$vnode 表示 Vue 实例的父虚拟 Node
     // 释放循环引用
     if (vm.$vnode) {
       vm.$vnode.parent = null
@@ -242,14 +243,22 @@ export function mountComponent(vm: Component,
   /**
    * 新建一个Watcher 对象,绑定在vm._watcher 上
    * */
+  /**
+   *  初始化Watcher 起到的作用,初始化的时候执行回调函数, 
+   * 另外,当vm实例中的检测的数据发生变化的时候执行回调函数
+   */
   new Watcher(vm, updateComponent, noop, null, true /* isRenderWatcher */)
   hydrating = false
 
   // manually mounted instance, call mounted on self
   // mounted is called for render-created child components in its inserted hook
+
+  // 手动挂载实例，调用挂载在self上
+  // 挂载是为其插入的钩子中委托方创建的子组件调用的
   /**
    * 判断如果 vm.$vnode == null , 则设置vm._isMounted = true ,调用mounted 函数
    * */
+  // vm.$vnode 表示 Vue 实例的父虚拟 Node
   if (vm.$vnode == null) {
     vm._isMounted = true
     callHook(vm, 'mounted')

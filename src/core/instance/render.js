@@ -60,7 +60,7 @@ export function renderMixin (Vue: Class<Component>) {
     return nextTick(fn, this)
   }
   /**
-   * vm._render 定义,
+   * vm._render 定义,创建vnode
    * */
   Vue.prototype._render = function (): VNode {
     const vm: Component = this
@@ -76,7 +76,6 @@ export function renderMixin (Vue: Class<Component>) {
         vm.$slots[key]._rendered = false
       }
     }
-
     if (_parentVnode) {
       vm.$scopedSlots = _parentVnode.data.scopedSlots || emptyObject
     }
