@@ -12,7 +12,8 @@ import { extend, mergeOptions, formatComponentName } from '../util/index'
 
 let uid = 0
 
-export function initMixin (Vue: Class<Component>) {
+export function initMixin(Vue: Class<Component>) {
+  // 在 new Vue() 的时候会真正的调用_init 
   // 原型上添加_init 后面会调用
   Vue.prototype._init = function (options?: Object) {
     const vm: Component = this
@@ -194,7 +195,7 @@ export function initMixin (Vue: Class<Component>) {
   }
 }
 
-export function initInternalComponent (vm: Component, options: InternalComponentOptions) {
+export function initInternalComponent(vm: Component, options: InternalComponentOptions) {
   const opts = vm.$options = Object.create(vm.constructor.options)
   // doing this because it's faster than dynamic enumeration.
   // 直接取属性,这样做是因为它比动态枚举更快
@@ -219,9 +220,11 @@ export function initInternalComponent (vm: Component, options: InternalComponent
 /**
  * 作用是合并构造器以及构造器父级上定义的options
  * */
-export function resolveConstructorOptions (Ctor: Class<Component>) {
+export function resolveConstructorOptions(Ctor: Class<Component>) {
   // 这里的ctor 就是vm.constructor 也就是 Vue 对象, 在src/core/global-api/index文件中,
   // 给Vue 添加了全局的属性或方法
+  console.log(Ctor, 'constructor');
+  debugger;
   let options = Ctor.options;
   // 打印出来
   // options = {
@@ -273,7 +276,7 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
 }
 
 // 处理修改的options
-function resolveModifiedOptions (Ctor: Class<Component>): ?Object {
+function resolveModifiedOptions(Ctor: Class<Component>): ?Object {
   let modified
   const latest = Ctor.options
   const extended = Ctor.extendOptions
@@ -287,7 +290,7 @@ function resolveModifiedOptions (Ctor: Class<Component>): ?Object {
   return modified
 }
 
-function dedupe (latest, extended, sealed) {
+function dedupe(latest, extended, sealed) {
   // compare latest and sealed to ensure lifecycle hooks won't be duplicated
   // between merges
   // 比较最新的和密封的，以确保生命周期钩子不会在合并之间重复
