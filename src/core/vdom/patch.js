@@ -503,7 +503,7 @@ export function createPatchFunction (backend) {
       return
     }
 
-    const elm = vnode.elm = oldVnode.elm
+    const elm = vnode.elm = oldVnode.elm // 将旧的vnode 的elem 赋给 新的
 
     if (isTrue(oldVnode.isAsyncPlaceholder)) {
       if (isDef(vnode.asyncFactory.resolved)) {
@@ -684,6 +684,7 @@ export function createPatchFunction (backend) {
   }
 
   return function patch (oldVnode, vnode, hydrating, removeOnly, parentElm, refElm) {
+    debugger;
     if (isUndef(vnode)) {
       if (isDef(oldVnode)) invokeDestroyHook(oldVnode)
       return
